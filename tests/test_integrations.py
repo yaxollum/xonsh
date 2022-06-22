@@ -483,6 +483,51 @@ a
 """,
         0,
     ),
+    # test $() inside piped callable alias
+    (
+        r"""
+def _callme(args):
+    $(python -c 'print("test")')
+    print('one\ntwo\nthree')
+
+aliases['callme'] = _callme
+callme | grep t
+""",
+        """two
+three
+""",
+        0,
+    ),
+    # test ![] inside piped callable alias
+    (
+        r"""
+def _callme(args):
+    python -c 'print("test")'
+    print('one\ntwo\nthree')
+
+aliases['callme'] = _callme
+callme | grep t
+""",
+        """two
+three
+""",
+        0,
+    ),
+    # test $[] inside piped callable alias
+    (
+        r"""
+def _callme(args):
+    $[python -c 'print("test")']
+    print('one\ntwo\nthree')
+
+aliases['callme'] = _callme
+callme | grep t
+""",
+        """two
+three
+""",
+        0,
+    ),
 ]
 
 UNIX_TESTS = [
