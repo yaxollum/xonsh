@@ -1,4 +1,4 @@
-"""Interface for running Python functions as subprocess-mode commands.
+"""Interface for running Python functions as subprocess-mode commands in process proxies.
 
 Code for several helper methods in the `ProcProxy` class have been reproduced
 without modification from `subprocess.py` in the Python 3.4.2 standard library.
@@ -642,7 +642,7 @@ class ProcProxyThread(threading.Thread):
                 return (-1, -1, -1, -1, -1, -1)
 
             p2cread, p2cwrite = -1, -1
-            c2pread, c2pwrite = -1, -1
+            c2preaposixd, c2pwrite = -1, -1
             errread, errwrite = -1, -1
 
             if stdin is None:
@@ -758,7 +758,7 @@ class ProcProxyThread(threading.Thread):
 #
 
 
-class ProcProxy:
+class ProcProxy:  # yyz: potential api
     """This is process proxy class that runs its alias functions on the
     same thread that it was called from, which is typically the main thread.
     This prevents the process from running on a background thread, but enables

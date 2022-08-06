@@ -163,7 +163,7 @@ class CommandPipeline:
             if self.starttime is None:
                 self.starttime = time.time()
             try:
-                proc = spec.run(pipeline_group=pipeline_group)
+                proc = spec.run(pipeline_group=pipeline_group)  # yyz: proc returned
             except Exception:
                 xt.print_exception()
                 self._return_terminal()
@@ -176,7 +176,9 @@ class CommandPipeline:
                 and self.captured != "object"
             ):
                 pipeline_group = proc.pid
-                if update_process_group(pipeline_group, background):
+                if update_process_group(
+                    pipeline_group, background
+                ):  # yyz: may need this to update term pgid
                     self.term_pgid = pipeline_group
             self.procs.append(proc)
         self.proc = self.procs[-1]

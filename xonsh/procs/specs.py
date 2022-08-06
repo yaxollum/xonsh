@@ -444,13 +444,15 @@ class SubprocSpec:
         event_name = self._cmd_event_name()
         self._pre_run_event_fire(event_name)
         kwargs = {n: getattr(self, n) for n in self.kwnames}
-        if callable(self.alias):
+        if callable(self.alias):  # yyz: running the stuff
             kwargs["env"] = self.env or {}
             kwargs["env"]["__ALIAS_NAME"] = self.alias_name or ""
             p = self.cls(self.alias, self.cmd, **kwargs)
         else:
             self.prep_env_subproc(kwargs)
-            self.prep_preexec_fn(kwargs, pipeline_group=pipeline_group)
+            self.prep_preexec_fn(
+                kwargs, pipeline_group=pipeline_group
+            )  # yyz: may be important for setting process group
             self._fix_null_cmd_bytes()
             p = self._run_binary(kwargs)
         p.spec = self
@@ -888,6 +890,7 @@ def run_subproc(cmds, captured=False, envs=None):
             print(f"TRACE SUBPROC: {cmds}, captured={captured}", file=sys.stderr)
 
     specs = cmds_to_specs(cmds, captured=captured, envs=envs)
+    print(specs)
     captured = specs[-1].captured
     if captured == "hiddenobject":
         command = HiddenCommandPipeline(specs)
@@ -895,7 +898,7 @@ def run_subproc(cmds, captured=False, envs=None):
         command = CommandPipeline(specs)
     proc = command.proc
     background = command.spec.background
-    if not all(x.is_proxy for x in specs):
+    if not all(x.is_proxy for x in specs):  # yyz: job should be added here
         xj.add_job(
             {
                 "cmds": cmds,

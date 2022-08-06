@@ -39,7 +39,7 @@ def ALTERNATE_MODE_FLAGS():
     return tuple(START_ALTERNATE_MODE) + tuple(END_ALTERNATE_MODE)
 
 
-class PopenThread(threading.Thread):
+class PopenThread(threading.Thread):  # yyz: another potential api
     """A thread for running and managing subprocess. This allows reading
     from the stdin, stdout, and stderr streams in a non-blocking fashion.
 
