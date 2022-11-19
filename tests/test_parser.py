@@ -358,6 +358,10 @@ def test_gt(check_ast):
     check_ast("42 > 65")
 
 
+def test_gt_no_space(check_ast):
+    check_ast("2>0")  # should not be parsed as stderr redirect (issue #4994)
+
+
 def test_eq(check_ast):
     check_ast("42 == 65")
 
