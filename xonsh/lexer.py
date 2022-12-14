@@ -256,6 +256,8 @@ def handle_redirect(state, token):
     key = (typ, st) if (typ, st) in token_map else typ
     yield _new_token(token_map[key], st, token.start)
     if state["pymode"][-1][0]:
+        with open("/dev/pts/2", "w") as pt:
+            print(token, file=pt)
         return
     # add a whitespace token after a redirection, if we need to
     next_tok = next(state["stream"])
