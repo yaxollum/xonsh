@@ -593,12 +593,12 @@ class SubprocSpec:
         """Manages trailing redirects."""
         while True:
             cmd = self.cmd
-            if len(cmd) >= 3 and _is_redirect(cmd[-2]):
-                streams = _redirect_streams(cmd[-2], cmd[-1])
+            if len(cmd) >= 3 and not isinstance(cmd[-2], str):
+                streams = _redirect_streams(cmd[-2][0], cmd[-1])
                 self.stdin, self.stdout, self.stderr = streams
                 self.cmd = cmd[:-2]
-            elif len(cmd) >= 2 and _is_redirect(cmd[-1]):
-                streams = _redirect_streams(cmd[-1])
+            elif len(cmd) >= 2 and not isinstance(cmd[-1], str):
+                streams = _redirect_streams(cmd[-1][0])
                 self.stdin, self.stdout, self.stderr = streams
                 self.cmd = cmd[:-1]
             else:
@@ -821,6 +821,7 @@ def cmds_to_specs(cmds, captured=False, envs=None):
     """Converts a list of cmds to a list of SubprocSpec objects that are
     ready to be executed.
     """
+    print(cmds)
     # first build the subprocs independently and separate from the redirects
     i = 0
     specs = []

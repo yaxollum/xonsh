@@ -3436,7 +3436,12 @@ class BaseParser:
                      | RSHIFT
                      | IOREDIRECT
         """
-        p0 = ast.Str(s=p[1], lineno=self.lineno, col_offset=self.col)
+        p0 = ast.Tuple(
+            elts=[ast.Str(s=p[1], lineno=self.lineno, col_offset=self.col)],
+            ctx=ast.Load(),
+            lineno=self.lineno,
+            col_offset=self.col,
+        )
         p0._cliarg_action = "append"
         p[0] = p0
 

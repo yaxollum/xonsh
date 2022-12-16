@@ -341,10 +341,11 @@ _redir_map = (
 )
 IORedirect = group(group(*_redir_map), f"{group(*_redir_names)}>>?")
 
-_redir_check_0 = set(_redir_map)
-_redir_check_1 = {f"{i}>" for i in _redir_names}.union(_redir_check_0)
-_redir_check_2 = {f"{i}>>" for i in _redir_names}.union(_redir_check_1)
-_redir_check = frozenset(_redir_check_2)
+_redir_check_map = frozenset(_redir_map)
+
+_redir_check_1 = {f"{i}>" for i in _redir_names}
+_redir_check_2 = {f"{i}>>" for i in _redir_names}
+_redir_check_single = frozenset(_redir_check_1.union(_redir_check_2))
 
 Operator = group(
     r"\*\*=?",
@@ -1009,8 +1010,10 @@ def _tokenize(readline, encoding, tolerant=False):
                     continue
                 token, initial = line[start:end], line[start]
 
-                if token in _redir_check:
-                    yield TokenInfo(IOREDIRECT, token, spos, epos, line)
+                if token in _redir_check_single:
+                    yield TokenInfo(IOREDIRECT1, token, spos, epos, line)
+                elif token in _redir_check_map:
+                    yield TokenInfo(IOREDIRECT2, token, spos, epos, line)
                 elif initial in numchars or (  # ordinary number
                     initial == "." and token != "." and token != "..."
                 ):
