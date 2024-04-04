@@ -6,16 +6,7 @@ import enum
 import os
 import re
 from collections import defaultdict
-from typing import (
-    Any,
-    Generic,
-    NamedTuple,
-    Optional,
-    TypeVar,
-    Union,
-    cast,
-    overload,
-)
+from typing import Any, Generic, NamedTuple, Optional, TypeVar, Union, cast, overload
 
 from xonsh.lazyasd import lazyobject
 from xonsh.lexer import Lexer
@@ -330,7 +321,8 @@ class CompletionContextParser:
         "LT",
         "GT",
         "RSHIFT",
-        "IOREDIRECT",
+        "IOREDIRECT1",
+        "IOREDIRECT2",
     }
     used_tokens |= io_redir_tokens
     artificial_tokens = {"ANY"}

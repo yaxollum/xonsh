@@ -3435,7 +3435,8 @@ class BaseParser:
         subproc_atom : GT WS subproc_atom
                      | LT WS subproc_atom
                      | RSHIFT WS subproc_atom
-                     | IOREDIRECT
+                     | IOREDIRECT1 WS subproc_atom
+                     | IOREDIRECT2
         """
         operator = ast.const_str(s=p[1], lineno=self.lineno, col_offset=self.col)
         elts = [operator] if len(p) == 2 else [operator, p[3]]
@@ -3530,7 +3531,8 @@ class BaseParser:
             "LT",
             "LSHIFT",
             "RSHIFT",
-            "IOREDIRECT",
+            "IOREDIRECT1",
+            "IOREDIRECT2",
             "SEARCHPATH",
             "INDENT",
             "DEDENT",
