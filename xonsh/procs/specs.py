@@ -828,6 +828,7 @@ def cmds_to_specs(cmds, captured=False, envs=None):
     """Converts a list of cmds to a list of SubprocSpec objects that are
     ready to be executed.
     """
+    print(cmds)
     # first build the subprocs independently and separate from the redirects
     i = 0
     specs = []
