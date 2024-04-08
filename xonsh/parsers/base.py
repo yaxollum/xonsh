@@ -3518,6 +3518,24 @@ class BaseParser:
             p0 = [p1, p2]
         p[0] = p0
 
+    def p_subproc_arg_part_bracket(self, p):
+        """subproc_arg_part : lbracket_tok subproc_arg rbracket_tok"""
+        p1 = p[1]
+        p2 = p[2]
+        p3 = p[3]
+        p1 = ast.const_str(s=p1.value, lineno=p1.lineno, col_offset=p1.lexpos)
+        p3 = ast.const_str(s=p3.value, lineno=p3.lineno, col_offset=p3.lexpos)
+        if ast.is_const_str(p2):
+            p[0] = ast.const_str(
+                p1.value + p2.value + p3.value,
+                lineno=p1.lineno,
+                col_offset=p1.col_offset,
+            )
+        elif isinstance(p2, list):
+            p[0] = [p1] + p2 + [p3]
+        else:
+            p[0] = [p1, p2, p3]
+
     def _attach_subproc_arg_part_rules(self):
         toks = set(self.tokens)
         toks -= {
