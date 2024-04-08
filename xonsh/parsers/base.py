@@ -3536,6 +3536,16 @@ class BaseParser:
         else:
             p[0] = [p1, p2, p3]
 
+    def p_subproc_arg_part_empty_brackets(self, p):
+        """subproc_arg_part : lbracket_tok rbracket_tok"""
+        p1 = p[1]
+        p2 = p[2]
+        p[0] = ast.const_str(
+            p1.value + p2.value,
+            lineno=p1.lineno,
+            col_offset=p1.lexpos,
+        )
+
     def _attach_subproc_arg_part_rules(self):
         toks = set(self.tokens)
         toks -= {
